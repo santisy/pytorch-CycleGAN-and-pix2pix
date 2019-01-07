@@ -25,7 +25,10 @@ class BaseDataset(data.Dataset, ABC):
             opt (Option class)-- stores all the experiment flags; needs to be a subclass of BaseOptions
         """
         self.opt = opt
-        self.root = opt.dataroot
+        self.root_A = opt.dataroot_A
+        self.root_B = opt.dataroot_B
+        self.dataset_A = opt.dataset_A
+        self.dataset_B = opt.dataset_B
 
     @staticmethod
     def modify_commandline_options(parser, is_train):
