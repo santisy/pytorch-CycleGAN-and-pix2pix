@@ -11,6 +11,8 @@ python train.py \
     --batch_size 1 \
     --load_size 286 \
     --crop_size 256 \
+    --dataset_mode "aligned" \
+    --save_epoch_freq 40 \
     "$@"
 
 

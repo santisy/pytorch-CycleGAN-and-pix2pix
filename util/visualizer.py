@@ -56,7 +56,7 @@ class Visualizer():
         self.opt = opt  # cache the option
         # self.display_id = opt.display_id
         self.use_html = opt.isTrain and not opt.no_html
-        # self.win_size = opt.display_winsize
+        self.win_size = opt.display_winsize
         self.name = opt.name
         # self.port = opt.display_port
         self.saved = False
@@ -72,11 +72,11 @@ class Visualizer():
             print('create web directory %s...' % self.web_dir)
             util.mkdirs([self.web_dir, self.img_dir])
 
-        # # create a logging file to store training losses
-        # self.log_name = os.path.join(opt.checkpoints_dir, opt.name, 'loss_log.txt')
-        # with open(self.log_name, "a") as log_file:
-            # now = time.strftime("%c")
-            # log_file.write('================ Training Loss (%s) ================\n' % now)
+        # create a logging file to store training losses
+        self.log_name = os.path.join(opt.checkpoints_dir, opt.name, 'loss_log.txt')
+        with open(self.log_name, "a") as log_file:
+            now = time.strftime("%c")
+            log_file.write('================ Training Loss (%s) ================\n' % now)
 
     def reset(self):
         """Reset the self.saved status"""
@@ -126,7 +126,7 @@ class Visualizer():
             losses (OrderedDict)  -- training losses stored in the format of (name, float) pairs
         """
         for label, value in losses.items():
-            self.summary_writer.add_scalar(label, value.item(), total_iters)
+            self.summary_writer.add_scalar(label, value, total_iters)
 
     # losses: same format as |losses| of plot_current_losses
     def print_current_losses(self, epoch, iters, losses, t_comp, t_data):

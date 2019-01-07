@@ -12,7 +12,7 @@ def get_norm_layer(norm_type='instance'):
     """Return a normalization layer
 
     Parameters:
-        norm_type (str) -- the name of the normalization layer: batch | instance | none
+        norm_type (str) -- the name of the normalization layer: batch  instance  none
 
     For BatchNorm, we use learnable affine parameters and track running statistics (mean/stddev).
     For InstanceNorm, we do not use learnable affine parameters. We do not track running statistics.
@@ -31,15 +31,6 @@ def get_norm_layer(norm_type='instance'):
 def get_scheduler(optimizer, opt):
     """Return a learning rate scheduler
 
-    Parameters:
-        optimizer          -- the optimizer of the network
-        opt (option class) -- stores all the experiment flags; needs to be a subclass of BaseOptions．　
-                              opt.lr_policy is the name of learning rate policy: linear | step | plateau | cosine
-
-    For 'linear', we keep the same learning rate for the first <opt.niter> epochs
-    and linearly decay the rate to zero over the next <opt.niter_decay> epochs.
-    For other schedulers (step, plateau, and cosine), we use the default PyTorch schedulers.
-    See https://pytorch.org/docs/stable/optim.html for more details.
     """
     if opt.lr_policy == 'linear':
         def lambda_rule(epoch):
@@ -62,7 +53,7 @@ def init_weights(net, init_type='normal', init_gain=0.02):
 
     Parameters:
         net (network)   -- network to be initialized
-        init_type (str) -- the name of an initialization method: normal | xavier | kaiming | orthogonal
+        init_type (str) -- the name of an initialization method: normal  xavier  kaiming  orthogonal
         init_gain (float)    -- scaling factor for normal, xavier and orthogonal.
 
     We use 'normal' in the original pix2pix and CycleGAN paper. But xavier and kaiming might
@@ -95,7 +86,7 @@ def init_net(net, init_type='normal', init_gain=0.02, gpu_ids=[]):
     """Initialize a network: 1. register CPU/GPU device (with multi-GPU support); 2. initialize the network weights
     Parameters:
         net (network)      -- the network to be initialized
-        init_type (str)    -- the name of an initialization method: normal | xavier | kaiming | orthogonal
+        init_type (str)    -- the name of an initialization method: normal  xavier  kaiming  orthogonal
         gain (float)       -- scaling factor for normal, xavier and orthogonal.
         gpu_ids (int list) -- which GPUs the network runs on: e.g., 0,1,2
 
@@ -116,8 +107,8 @@ def define_G(input_nc, output_nc, ngf, netG, norm='batch', use_dropout=False, in
         input_nc (int) -- the number of channels in input images
         output_nc (int) -- the number of channels in output images
         ngf (int) -- the number of filters in the last conv layer
-        netG (str) -- the architecture's name: resnet_9blocks | resnet_6blocks | unet_256 | unet_128
-        norm (str) -- the name of normalization layers used in the network: batch | instance | none
+        netG (str) -- the architecture's name: resnet_9blocks  resnet_6blocks  unet_256  unet_128
+        norm (str) -- the name of normalization layers used in the network: batch  instance  none
         use_dropout (bool) -- if use dropout layers.
         init_type (str)    -- the name of our initialization method.
         init_gain (float)  -- scaling factor for normal, xavier and orthogonal.
@@ -158,7 +149,7 @@ def define_D(input_nc, ndf, netD, n_layers_D=3, norm='batch', init_type='normal'
     Parameters:
         input_nc (int)     -- the number of channels in input images
         ndf (int)          -- the number of filters in the first conv layer
-        netD (str)         -- the architecture's name: basic | n_layers | pixel
+        netD (str)         -- the architecture's name: basic  n_layers  pixel
         n_layers_D (int)   -- the number of conv layers in the discriminator; effective when netD=='n_layers'
         norm (str)         -- the type of normalization layers used in the network.
         init_type (str)    -- the name of the initialization method.
@@ -167,20 +158,6 @@ def define_D(input_nc, ndf, netD, n_layers_D=3, norm='batch', init_type='normal'
 
     Returns a discriminator
 
-    Our current implementation provides three types of discriminators:
-        [basic]: 'PatchGAN' classifier described in the original pix2pix paper.
-        It can classify whether 70×70 overlapping patches are real or fake.
-        Such a patch-level discriminator architecture has fewer parameters
-        than a full-image discriminator and can work on arbitrarily-sized images
-        in a fully convolutional fashion.
-
-        [n_layers]: With this mode, you cna specify the number of conv layers in the discriminator
-        with the parameter <n_layers_D> (default=3 as used in [basic] (PatchGAN).)
-
-        [pixel]: 1x1 PixelGAN discriminator can classify whether a pixel is real or not.
-        It encourages greater color diversity but has no effect on spatial statistics.
-
-    The discriminator has been initialized by <init_net>. It uses Leakly RELU for non-linearity.
     """
     net = None
     norm_layer = get_norm_layer(norm_type=norm)
@@ -276,8 +253,8 @@ def cal_gradient_penalty(netD, real_data, fake_data, device, type='mixed', const
         real_data (tensor array)    -- real images
         fake_data (tensor array)    -- generated images from the generator
         device (str)                -- GPU / CPU: from torch.device('cuda:{}'.format(self.gpu_ids[0])) if self.gpu_ids else torch.device('cpu')
-        type (str)                  -- if we mix real and fake data or not [real | fake | mixed].
-        constant (float)            -- the constant used in formula ( | |gradient||_2 - constant)^2
+        type (str)                  -- if we mix real and fake data or not [real  fake  mixed].
+        constant (float)            -- the constant used in formula (  gradient_2 - constant)^2
         lambda_gp (float)           -- weight for this loss
 
     Returns the gradient penalty loss
@@ -322,7 +299,7 @@ class ResnetGenerator(nn.Module):
             norm_layer          -- normalization layer
             use_dropout (bool)  -- if use dropout layers
             n_blocks (int)      -- the number of ResNet blocks
-            padding_type (str)  -- the name of padding layer in conv layers: reflect | replicate | zero
+            padding_type (str)  -- the name of padding layer in conv layers: reflect  replicate  zero
         """
         assert(n_blocks >= 0)
         super(ResnetGenerator, self).__init__()
@@ -386,7 +363,7 @@ class ResnetBlock(nn.Module):
 
         Parameters:
             dim (int)           -- the number of channels in the conv layer.
-            padding_type (str)  -- the name of padding layer: reflect | replicate | zero
+            padding_type (str)  -- the name of padding layer: reflect  replicate  zero
             norm_layer          -- normalization layer
             use_dropout (bool)  -- if use dropout layers.
             use_bias (bool)     -- if the conv layer uses bias or not
@@ -435,7 +412,7 @@ class UnetGenerator(nn.Module):
         Parameters:
             input_nc (int)  -- the number of channels in input images
             output_nc (int) -- the number of channels in output images
-            num_downs (int) -- the number of downsamplings in UNet. For example, # if |num_downs| == 7,
+            num_downs (int) -- the number of downsamplings in UNet. For example, # if num_downs == 7,
                                 image of size 128x128 will become of size 1x1 # at the bottleneck
             ngf (int)       -- the number of filters in the last conv layer
             norm_layer      -- normalization layer
@@ -462,7 +439,7 @@ class UnetGenerator(nn.Module):
 class UnetSkipConnectionBlock(nn.Module):
     """Defines the Unet submodule with skip connection.
         X -------------------identity----------------------
-        |-- downsampling -- |submodule| -- upsampling --|
+        -- downsampling -- submodule -- upsampling --
     """
 
     def __init__(self, outer_nc, inner_nc, input_nc=None,

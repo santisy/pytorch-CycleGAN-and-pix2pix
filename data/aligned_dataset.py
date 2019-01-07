@@ -23,7 +23,7 @@ class AlignedDataset(BaseDataset):
         Parameters:
             opt (Option class) -- stores all the experiment flags; needs to be a subclass of BaseOptions
         """
-        BaseDataset.__init__(self, opt)
+        super(AlignedDataset, self).__init__(opt)
 
         self.A_paths = self._get_paths(datamark="A")
         self.B_paths = self._get_paths(datamark="B")

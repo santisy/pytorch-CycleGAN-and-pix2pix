@@ -61,7 +61,7 @@ if __name__ == '__main__':
                 losses = model.get_current_losses()
                 t_comp = (time.time() - iter_start_time) / opt.batch_size
                 visualizer.print_current_losses(epoch, epoch_iter, losses, t_comp, t_data)
-                visualizer.plot_current_losses(epoch, total_iters, losses)
+                visualizer.plot_current_losses(total_iters, None, losses)
 
             if total_iters % opt.save_latest_freq == 0 or \
                     (opt.debug and total_iters % 20 == 0):   # cache our latest model every <save_latest_freq> iterations
@@ -73,7 +73,7 @@ if __name__ == '__main__':
             if opt.debug and total_iters % 20 == 0:
                 break
 
-        if epoch % opt.save_epoch_freq == 0 \
+        if epoch % opt.save_epoch_freq == 0 or \
                 (opt.debug and total_iters % 20 == 0):              # cache our model every <save_epoch_freq> epochs
             print('saving the model at the end of epoch %d, iters %d' % (epoch, total_iters))
             model.save_networks('latest')
@@ -81,3 +81,5 @@ if __name__ == '__main__':
 
         print('End of epoch %d / %d \t Time Taken: %d sec' % (epoch, opt.niter + opt.niter_decay, time.time() - epoch_start_time))
         model.update_learning_rate()                     # update learning rates at the end of every epoch.
+        if opt.debug and total_iters % 20 == 0:
+            break
